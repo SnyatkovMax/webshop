@@ -8,9 +8,15 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True, null=False)
 
+    def __str__(self):
+        return self.name
+
 
 class Producer(models.Model):
     name = models.CharField(max_length=100, unique=True, null=False)
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -20,9 +26,15 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     producer = models.ForeignKey(Producer, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class Status(models.Model):
     name = models.CharField(max_length=100, unique=False, null=False)
+
+    def __str__(self):
+        return self.name
 
 
 class Delivery(models.Model):
@@ -32,6 +44,9 @@ class Delivery(models.Model):
     close_date = models.DateTimeField(null=True)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.address
+
 
 class Cart(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -39,9 +54,15 @@ class Cart(models.Model):
     amount = models.PositiveIntegerField(null=False, default=1)
     delivery = models.ForeignKey(Delivery, null=True, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.product} / {self.user}'
+
 
 class Comment(models.Model):
     delivery = models.ForeignKey(Delivery, on_delete=models.CASCADE)
     manager = models.ForeignKey(User, on_delete=models.CASCADE)
     comment_date = models.DateTimeField(null=False, auto_now=True)
     comment_text = models.CharField(max_length=100, unique=False, null=False)
+
+    def __str__(self):
+        return f'{self.delivery} / {self.manager}'
